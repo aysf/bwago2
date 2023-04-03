@@ -72,4 +72,10 @@ func main() {
 		templateCache: tc,
 	}
 
+	err := app.serve()
+	if err != nil {
+		app.errorLog.Println("error app serve:", err)
+		log.Fatal(err)
+	}
+
 }
