@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"text/template"
+	"time"
 )
 
 const version = "1.0.0"
@@ -32,7 +34,18 @@ type application struct {
 }
 
 func (app *application) serve() error {
-	srv := &http.Serve{}
+	srv := &http.Server{
+		Addr:              fmt.Sprintf(":%d", app.config.port),
+		Handler:           app.routes(),
+		IdleTimeout:       30 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      5 * time.Second,
+	}
+
+	app.infoLog.Printf("starting HTTP server in %s mode on port %d\n", app.config.env, app.config.port)
+
+	return srv.ListenAndServe()
 }
 
 func main() {
