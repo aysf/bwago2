@@ -11,6 +11,12 @@ run
 go run ./cmd/web
 ```
 
+using air
+
+```
+air
+```
+
 ## Features
 
 - Virtual Terminal
